@@ -1,0 +1,112 @@
+@use '../../var/var.scss';
+
+@font-face {
+    font-family: "Inter_18pt-Regular";
+    src:
+        local("Inter_18pt-Regular"),
+        url("../../fonts/Inter_18pt-Regular.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+html {
+    min-height: auto;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    font-family: 'Inter_18pt-Regular';
+
+    box-sizing: inherit;
+
+}
+
+body {
+    margin: 0;
+    background-color: var.$background-body-base;
+}
+
+.header {
+    align-items: center;
+    padding: 22px;
+    justify-content: space-between;
+    display: flex;
+    height: 80px;
+    background-color: var.$background-color-base;
+
+    &__logo {
+        text-decoration: none;
+        margin: 0;
+        font-weight: normal;
+        font-size: 18px;
+        color: var.$heading-color;
+    }
+
+    &__nav {
+        align-items: center;
+        display: flex;
+        column-gap: 24px;
+    }
+
+
+}
+
+.nav {
+    &__item {
+        cursor: pointer;
+
+
+
+
+    }
+
+    &__log-out {
+        background-color: var.$background-color-base;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid var.$text-color;
+        color: var.$text-color;
+        font-size: 18px;
+        padding: 15px 18px;
+
+    }
+
+    &__link {
+        padding: 16px 18px;
+        text-decoration: none;
+        color: var.$heading-color;
+
+        &--active {
+            color: var.$success-color;
+            border-radius: 5px 5px 5px 5px;
+            border: solid 1px var.$success-color;
+        }
+    }
+
+    &__create-article {
+        font-size: 14px;
+        color: var.$success-color;
+        text-decoration: none;
+        border-radius: 5px 5px 5px 5px;
+        border: solid 1px var.$success-color;
+        height: fit-content;
+        padding: 6px 11px
+    }
+
+    &__profile {
+        cursor: pointer;
+        height: 46px;
+        width: 117px;
+        position: absolute;
+    }
+}
+
+.header__user {
+
+    align-items: center;
+}
+
+
+
+@media(min-width: 650px) {}

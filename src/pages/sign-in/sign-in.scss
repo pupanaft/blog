@@ -1,0 +1,111 @@
+@use '../../var/var.scss';
+
+.form {
+    max-width: 384px;
+    background-color: var.$background-color-base;
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+        margin: 0;
+        font-size: 20px;
+        color: var.$form-text-color;
+        align-self: center;
+        margin-bottom: 32px
+    }
+
+    &__main {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+        margin-bottom: 32px;
+
+
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__input {
+        font-size: 16px;
+        padding: 8px 12px;
+        line-height: 24px;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid var.$form-border-color;
+        color: var.$text-color;
+
+        &:focus {
+            outline: var.$info-color solid 2px;
+        }
+
+        &::placeholder {
+            color: var.$form-text-secondary;
+        }
+
+        &--error {
+            border: 1px solid var.$highlight-color;
+        }
+    }
+
+    &__text {
+        line-height: 22px;
+        font-size: 14px;
+    }
+
+    &__agreement {
+        position: relative;
+        margin-bottom: 30px;
+        font-size: 14px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            max-width: 320px;
+            overflow: hidden;
+            width: 100%;
+            height: 1px;
+            top: -11px;
+            background-color: var.$form-border-color;
+        }
+    }
+
+    &__submit {
+        background-color: var.$info-color;
+        border: none;
+        border-radius: 4px 4px 4px 4px;
+        color: var.$background-color-base;
+        font-size: 16px;
+        height: 40px;
+        margin-bottom: 10px;
+    }
+
+    &__footer {
+        font-size: 12px;
+        text-align: center;
+    }
+
+    &__sign-in {
+        text-decoration: none;
+        color: var.$info-color;
+    }
+
+    &__error {
+        color: var.$highlight-color;
+        font-size: 14px;
+        line-height: 22px;
+        margin: 0;
+    }
+}
+
+.agreement {
+    &__wrapper {
+        align-items: start;
+        display: flex;
+    }
+}

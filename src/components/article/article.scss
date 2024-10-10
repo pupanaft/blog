@@ -1,0 +1,90 @@
+@use '../../var/var.scss';
+
+.article {
+    list-style: none;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    padding: 16px;
+    max-width: 938px;
+    background-color: var.$background-color-base;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+
+    &__header {
+        display: flex;
+        margin-bottom: 8px;
+    }
+
+    &__title {
+        margin: 0;
+        font-weight: normal;
+        font-size: 20px;
+        color: var.$info-color;
+        margin-right: 12px;
+    }
+
+    &__likes {
+        margin-left: 5px;
+        align-self: center;
+    }
+
+    &__tags {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        column-gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    &__body {
+        margin: 0;
+        color: var.$text-color;
+        font-size: 12px;
+
+    }
+
+    &__link {
+        top: 0;
+        left: 0;
+        position: absolute;
+        min-width: 100%;
+        min-height: 100%;
+    }
+
+    &__user {
+        position: absolute;
+    }
+}
+
+.tag {
+    font-size: 12px;
+    border: solid 1px;
+    border-radius: 2px 2px 2px 2px;
+    padding: 0 4px;
+}
+
+.user {
+
+    top: 16px;
+    right: 16px;
+    display: flex;
+
+    &__image {
+        border-radius: 50%;
+        margin-left: 16px;
+        width: 46px;
+        height: 46px;
+    }
+
+    &__name {
+        color: var.$heading-color;
+        font-size: 18px;
+    }
+
+    &__time {
+        color: var.$text-color-secondary ;
+        font-size: 12px;
+    }
+}
