@@ -2,15 +2,17 @@ import { useDispatch ,useSelector} from 'react-redux'
 import { useForm , useFieldArray} from 'react-hook-form'
 import './article-form.scss'
 // import { useState } from 'react'
+import { useEffect } from 'react'
 
 import Tag from '../tag'
 import { fetchCreateArticle } from '../../store/blogSlice'
 import {user}from '../../store/userSlice'
 
-export default function ArticleForm() {
+
+export default function ArticleForm({title, editData}) {
   const userInfo = useSelector(user)
   const dispatch = useDispatch()
-  const { register, control, handleSubmit } = useForm({
+  const { register, control, handleSubmit ,reset} = useForm({
     defaultValues: {
       tagList: [''] 
     }
@@ -26,10 +28,17 @@ export default function ArticleForm() {
     }
 
   }
+  useEffect(() => {
+    if(editData){
+      reset(editData)
+    }else{
+      append('')
+    }
+  }, [reset,append,editData])
   return (
     <main className="wrapper">
       <form className="article-form" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="article-form__title">Create new article</h1>
+        <h1 className="article-form__title">{title}</h1>
         <ul className="article-form__main">
           <li>
             <label className="article-form__item" htmlFor="title">

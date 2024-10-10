@@ -1,5 +1,6 @@
 import ArticleForm from '../../components/article-form'
 
 export default function NewArticle() {
-  return <ArticleForm />
+  const title = 'Create new article'
+  return <ArticleForm title={title} />
 }
