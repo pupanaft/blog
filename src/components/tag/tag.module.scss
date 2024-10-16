@@ -1,0 +1,62 @@
+@use '../../var/var.scss';
+
+.article-form {
+    &__item {
+        font-family: 'Roboto-Regular';
+        display: flex;
+        flex-direction: column;
+
+        &--tags {
+            flex-direction: row;
+        }
+    }
+
+    &__input {
+        font-family: 'Roboto-Regular';
+        font-size: 16px;
+        padding: 8px 12px;
+        line-height: 24px;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid var.$form-border-color;
+        color: var.$text-color;
+
+        &:focus {
+            outline: var.$info-color solid 2px;
+        }
+
+        &::placeholder {
+            color: var.$form-text-secondary;
+        }
+    }
+}
+
+.tags {
+    &__button {
+        font-family: 'Roboto-Regular';
+        font-size: 16px;
+        line-height: 24px;
+        background-color: var.$background-color-base;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid var.$highlight-color;
+        color: var.$highlight-color ;
+        padding: 8px 32px;
+        margin-left: 18px;
+
+        &:active {
+            background-color: rgb(248, 209, 211);
+
+        }
+
+        &--add {
+            border: 1px solid var.$info-color;
+            color: var.$info-color;
+            align-self: flex-end;
+            height: fit-content;
+
+            &:active {
+                background-color: rgb(204, 229, 252);
+
+            }
+        }
+    }
+}

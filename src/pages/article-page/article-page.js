@@ -5,7 +5,8 @@ import showdown from 'showdown'
 
 import { fetchOneArticle, selectArticle } from '../../store/blogSlice'
 import Article from '../../components/article'
-import './article-page.scss'
+
+import classes from './article-page.module.scss'
 
 export default function ArticlePage() {
   const { slug } = useParams()
@@ -21,7 +22,7 @@ export default function ArticlePage() {
     const converter = new showdown.Converter()
     const html = converter.makeHtml(body)
     return (
-      <div className="blog__wrapper">
+      <div className={classes.blog__wrapper}>
         <Article itemInfo={articleParams} body={html} />
       </div>
     )

@@ -1,17 +1,18 @@
 import { useDispatch ,useSelector} from 'react-redux'
 import { useForm , useFieldArray} from 'react-hook-form'
-import './article-form.scss'
-// import { useState } from 'react'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import Tag from '../tag'
-import { fetchCreateArticle } from '../../store/blogSlice'
 import {user}from '../../store/userSlice'
 
+import classes from './article-form.module.scss'
 
-export default function ArticleForm({title, editData}) {
+
+export default function ArticleForm({title, editData, fetch, slug=''}) {
   const userInfo = useSelector(user)
   const dispatch = useDispatch()
+  const navavigate = useNavigate()
   const { register, control, handleSubmit ,reset} = useForm({
     defaultValues: {
       tagList: [''] 
@@ -23,8 +24,14 @@ export default function ArticleForm({title, editData}) {
   })
   const onSubmit = (data) => {
     if(userInfo){
-      const {token} = userInfo
-      dispatch(fetchCreateArticle({data,token}))
+      if(slug){
+        dispatch(fetch({slug,data}))
+        navavigate('/')
+      }else{
+        dispatch(fetch({data}))
+        navavigate('/')
+      }
+   
     }
 
   }
@@ -36,51 +43,51 @@ export default function ArticleForm({title, editData}) {
     }
   }, [reset,append,editData])
   return (
-    <main className="wrapper">
-      <form className="article-form" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="article-form__title">{title}</h1>
-        <ul className="article-form__main">
+    <main >
+      <form className={classes['article-form']} onSubmit={handleSubmit(onSubmit)}>
+        <h1 className={classes['article-form__title']}>{title}</h1>
+        <ul className={classes['article-form__main']}>
           <li>
-            <label className="article-form__item" htmlFor="title">
-              <span className="article-form__text">Title</span>
+            <label className={classes['article-form__item']} htmlFor="title">
+              <span className={classes['article-form__text']}>Title</span>
               <input
                 {...register('title', {required: 'This field is required'})}
                 type="text"
                 id="title"
                 placeholder="title"
-                className='article-form__input'
+                className={classes['article-form__input']}
               />
             </label>
           </li>
           <li>
-            <label className="article-form__item" htmlFor="description">
-              <span className="article-form__text">Short description</span>
+            <label className={classes['article-form__item']} htmlFor="description">
+              <span className={classes['article-form__text']}>Short description</span>
               <input
                 {...register('description', {required: 'This field is required'})}
                 type="text"
                 id="description"
                 placeholder="description"
-                className='article-form__input'
+                className={classes['article-form__input']}
               />
             </label>
           </li>
           <li>
-            <label className="article-form__item" htmlFor="Text">
-              <span className="article-form__text">Text</span>
+            <label className={classes['article-form__item']} htmlFor="Text">
+              <span className={classes['article-form__text']}>Text</span>
               <textarea
                 {...register('body', {required: 'This field is required'})}
                 type="text"
                 id="Text"
                 placeholder="Text"
-                className='article-form__input article-form__input--area'
+                className={`${classes['article-form__input']} ${classes['article-form__input--area']}`}
               />
             </label>
           </li>
         </ul>
-        <div className='article-form__tags tags'>
-          <span className="tags__title">Tags</span>
-          <div className='tags__wrapper'>
-            <ul className='tags__list' >
+        <div className={`${classes['article-form__tags']} ${classes.tags}`}>
+          <span className={classes.tags__title}>Tags</span>
+          <div className={classes.tags__wrapper}>
+            <ul className={classes.tags__list} >
               {fields.map((field, index) => (
                 <Tag 
                   key={field.id}
@@ -90,10 +97,10 @@ export default function ArticleForm({title, editData}) {
                 />
               ))}
             </ul>
-            <button type='button' className='tags__button tags__button--add' onClick={() => append('')}>Add tag</button>
+            <button type='button' className={`${classes.tags__button} ${classes['tags__button--add']}`} onClick={() => append('')}>Add tag</button>
           </div>
         </div>
-        <button className="article-form__submit" type="submit">Send</button>
+        <button className={classes['article-form__submit']} type="submit">Send</button>
       </form>
     </main>
   )

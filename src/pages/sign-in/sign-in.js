@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 import { errorServer, fetchExitingUser, user } from '../../store/userSlice'
 
-import './sign-in.scss'
+import classes from './sign-in.module.scss'
 
 export default function SignIn() {
   const errorServerInfo = useSelector(errorServer)
@@ -30,22 +30,22 @@ export default function SignIn() {
   const passwordError = formState.errors.password?.message
 
   const mailInput = classNames({
-    form__input: true,
-    'form__input--error': mailError || (errorServerInfo && errorServerInfo['email or password']),
+    [classes.form__input]: true,
+    [classes['form__input--error']]: mailError || (errorServerInfo && errorServerInfo['email or password']),
   })
   const passwordInput = classNames({
-    form__input: true,
-    'form__input--error': passwordError || (errorServerInfo && errorServerInfo['email or password']),
+    [classes.form__input]: true,
+    [classes['form__input--error']]: passwordError || (errorServerInfo && errorServerInfo['email or password']),
   })
 
   return (
-    <div className="blog__content">
-      <form className="form" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="form__title">Sign In</h1>
-        <ul className="form__main">
+    <div className={classes.blog__content}>
+      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+        <h1 className={classes.form__title}>Sign In</h1>
+        <ul className={classes.form__main}>
           <li>
-            <label className="form__item" htmlFor="Email">
-              <span className="form__text">Email address</span>
+            <label className={classes.form__item}  htmlFor="Email">
+              <span className={classes.form__text}>Email address</span>
               <input
                 {...register('mail', {
                   required: 'This field is required',
@@ -58,13 +58,14 @@ export default function SignIn() {
                 className={mailInput}
                 id="Email"
                 placeholder="Email address"
+                autoComplete="off"
               />
-              {mailError && <p className="form__error">{mailError}</p>}
+              {mailError && <p className={classes.form__error}>{mailError}</p>}
             </label>
           </li>
           <li>
-            <label className="form__item" htmlFor="Password">
-              <span className="form__text">Password</span>
+            <label className={classes.form__item} htmlFor="Password">
+              <span className={classes.form__text}>Password</span>
               <input
                 {...register('password', {
                   required: 'This field is required',
@@ -75,21 +76,21 @@ export default function SignIn() {
                 id="Password"
                 placeholder="Password"
               />
-              {passwordError && <p className="form__error">{passwordError}</p>}
+              {passwordError && <p className={classes.form__error}>{passwordError}</p>}
             </label>
           </li>
           <li>
             {errorServerInfo && errorServerInfo['email or password'] && (
-              <p className="form__error">{`Email or password ${errorServerInfo['email or password']}`}</p>
+              <p className={classes.form__error}>{`Email or password ${errorServerInfo['email or password']}`}</p>
             )}
           </li>
         </ul>
-        <button className="form__submit" type="submit">
+        <button className={classes.form__submit} type="submit">
           Login
         </button>
-        <footer className="form__footer">
-          <span>Don’t have an account?</span>
-          <Link to="/sign-up" className="form__link">
+        <footer className={`${classes.form__footer} ${classes.footer}`}>
+          <span className={classes.footer__text}>Don’t have an account?</span>
+          <Link to="/sign-up" className={classes.form__link}>
             {' '}
             Sign Up.
           </Link>

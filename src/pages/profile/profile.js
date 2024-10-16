@@ -2,21 +2,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import classNames from 'classnames'
 
-import { errorServer, fetchEditUser, user } from '../../store/userSlice'
+import { errorServer, fetchEditUser,  } from '../../store/userSlice'
+
+import classes from './profile.module.scss'
 
 export default function Profile() {
   const errorServerInfo = useSelector(errorServer)
-  const userInfo = useSelector(user)
 
   const { register, handleSubmit, formState } = useForm({ mode: 'onChange' })
   const dispatch = useDispatch()
 
   const onSubmit = (data) => {
     const newData = Object.fromEntries(Object.entries(data).filter(([, value]) => value !== ''))
-    const { token } = userInfo
+
     const newUser = { user: { ...newData } }
 
-    dispatch(fetchEditUser({ newUser, token }))
+    dispatch(fetchEditUser({ newUser }))
   }
 
   const nameError = formState.errors.username?.message
@@ -25,30 +26,30 @@ export default function Profile() {
   const avatarError = formState.errors.image?.message
 
   const userInput = classNames({
-    form__input: true,
-    'form__input--error': nameError || errorServerInfo?.username,
+    [classes.form__input]: true,
+    [classes['form__input--error']]: nameError || errorServerInfo?.username,
   })
   const mailInput = classNames({
-    form__input: true,
-    'form__input--error': mailError || errorServerInfo?.email,
+    [classes.form__input]: true,
+    [classes['form__input--error']]: mailError || errorServerInfo?.email,
   })
   const passwordInput = classNames({
-    form__input: true,
-    'form__input--error': passwordError,
+    [classes.form__input]: true,
+    [classes['form__input--error']]: passwordError,
   })
   const avatarInput = classNames({
-    form__input: true,
-    'form__input--error': avatarError,
+    [classes.form__input]: true,
+    [classes['form__input--error']]: avatarError,
   })
 
   return (
-    <div className="blog__content">
-      <form className="form" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="form__title">Edit Profile</h1>
-        <ul className="form__main">
+    <div className={classes.blog__content}>
+      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+        <h1 className={classes.form__title}>Edit Profile</h1>
+        <ul className={classes.form__main}>
           <li>
-            <label className="form__item" htmlFor="username">
-              <span className="form__text">Username</span>
+            <label className={classes.form__item} htmlFor="username">
+              <span className={classes.form__text}>Username</span>
               <input
                 {...register('username', {
                   minLength: {
@@ -69,13 +70,13 @@ export default function Profile() {
                 id="username"
                 placeholder="Username"
               />
-              {nameError && <p className="form__error">{nameError}</p>}
-              {errorServerInfo?.username && <p className="form__error">{errorServerInfo?.username}</p>}
+              {nameError && <p className={classes.form__error}>{nameError}</p>}
+              {errorServerInfo?.username && <p className={classes.form__error}>{`Username ${errorServerInfo.username}`}</p>}
             </label>
           </li>
           <li>
-            <label className="form__item" htmlFor="email">
-              <span className="form__text">Email address</span>
+            <label className={classes.form__item} htmlFor="email">
+              <span className={classes.form__text}>Email address</span>
               <input
                 {...register('email', {
                   pattern: {
@@ -88,13 +89,13 @@ export default function Profile() {
                 id="email"
                 placeholder="Email address"
               />
-              {mailError && <p className="form__error">{mailError}</p>}
-              {errorServerInfo?.email && <p className="form__error">{errorServerInfo?.email}</p>}
+              {mailError && <p className={classes.form__error}>{mailError}</p>}
+              {errorServerInfo?.email && <p className={classes.form__error}>{`Email ${errorServerInfo?.email}`}</p>}
             </label>
           </li>
           <li>
-            <label className="form__item" htmlFor="Password">
-              <span className="form__text">New password</span>
+            <label className={classes.form__item} htmlFor="Password">
+              <span className={classes.form__text}>New password</span>
               <input
                 {...register('password', {
                   minLength: {
@@ -116,12 +117,12 @@ export default function Profile() {
                 id="Password"
                 placeholder="New password"
               />
-              {passwordError && <p className="form__error">{passwordError}</p>}
+              {passwordError && <p className={classes.form__error}>{passwordError}</p>}
             </label>
           </li>
           <li>
-            <label className="form__item" htmlFor="avatar">
-              <span className="form__text">Avatar image (url)</span>
+            <label className={classes.form__item} htmlFor="avatar">
+              <span className={classes.form__text}>Avatar image (url)</span>
               <input
                 {...register('image', {
                   pattern: {
@@ -135,11 +136,11 @@ export default function Profile() {
                 id="avatar"
                 placeholder="Avatar image"
               />
-              {avatarError && <p className="form__error">{avatarError}</p>}
+              {avatarError && <p className={classes.form__error}>{avatarError}</p>}
             </label>
           </li>
         </ul>
-        <button className="form__submit" type="submit">
+        <button className={classes.form__submit} type="submit">
           Save
         </button>
       </form>

@@ -1,48 +1,89 @@
-import { HeartOutlined } from '@ant-design/icons'
-import './article.scss'
+import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import parse from 'html-react-parser'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import classNames from 'classnames'
 
 import {user} from '../../store/userSlice'
+import ControlPanel from '../control-panel'
+import { fetchFavoritedArticle ,fetchUnFavoritedArticle} from '../../store/blogSlice'
+
+import classes from './article.module.scss'
+
 
 export default function Article({ itemInfo, page, body = '' }) {
   const userInfo = useSelector(user)
-  console.log(userInfo)
-  const tags = itemInfo.tags.map((tag) => (
-    <li key={`key-${tag}`} className="tag">
-      {tag}
-    </li>
-  ))
+  const dispatch = useDispatch()
 
+  function validateTags(tags) {
+    const uniqueTags = new Set()
+    if(tags!==null){
+      tags.forEach(tag => {
+        if (tag !== null && tag.trim() !== '') {
+          uniqueTags.add(tag.trim())
+        }
+      })
+      const tagsArray =  Array.from(uniqueTags)
+      const tagsJsx = tagsArray.map((tag) => (
+        <li key={`key-${tag}`} className={classes.tag}>
+          {tag}
+        </li>
+      ))
+      return tagsJsx
+    }
+    return ''
+  }
+  const tags = validateTags(itemInfo.tags)
+  
+  const handleFavorite = (slug) => {
+    if (userInfo){
+      dispatch(fetchFavoritedArticle({slug}))
+    }
+  }
+  const handleUnFavorite = (slug) => {
+    if (userInfo){
+      dispatch(fetchUnFavoritedArticle({slug}))
+    }
+  }
+  const heartClassName = classNames({
+    [classes.article__heart]:true,
+    [classes['article__heart--filled']]:itemInfo.favorited && userInfo,
+    [classes['article__heart--user']]:userInfo
+  })
+  const articleClassName = classNames({
+    [classes.article]:true,
+    [classes['article--full']]:body 
+  })
+  
   return (
-    <li className="article">
-      <span className="article__header">
-        <h2 className="article__title">{itemInfo.title}</h2>
-        <HeartOutlined />
-        <div className="article__likes">{itemInfo.likes}</div>
+    <li className={articleClassName}>
+      <span className={classes.article__header}>
+        <h2 className={classes.article__title}>{!body? itemInfo.title.slice(0, 19):itemInfo.title}</h2>
+        {itemInfo.favorited && userInfo?
+          <HeartFilled className={heartClassName} onClick={()=>handleUnFavorite(itemInfo.slug)}/>
+          :
+          <HeartOutlined className={heartClassName} onClick={()=>handleFavorite(itemInfo.slug)}/>
+        }
+        <div className={classes.article__likes}>{itemInfo.likes}</div>
       </span>
-      <ul className="article__tags">{tags}</ul>
-      <p className="article__body">{itemInfo.description}</p>
-      <section className="article__user user">
-        <div className='user__wrapper'>
-          <div className="user__information">
-            <div className="user__name">{itemInfo.user}</div>
-            <span className="user__time">{itemInfo.data}</span>
+      <ul className={classes.article__tags}>{tags}</ul>
+      <p className={classes.article__body}>{!body? itemInfo.description.slice(0, 19):itemInfo.description }</p>
+      <section className={`${classes.article__user} ${classes.user}`}>
+        <div className={classes.user__wrapper}>
+          <div className={classes.user__information}>
+            <div className={classes.user__name}>{itemInfo.user}</div>
+            <span className={classes.user__time}>{itemInfo.data}</span>
           </div>
-          <img className="user__image" src={itemInfo.avatar} alt="user-avatar" />
+          <img className={classes.user__image} src={itemInfo.avatar} alt="user-avatar" />
         </div>
-        {userInfo?
-          <div className='article__control-panel'>
-            <button type='button' className='article__button'>Delete</button>
-            <Link to={`/articles/${page}/${itemInfo.slug}/edit`} className='article__button article__button--edit'>Edit</Link>
-          </div>
+        {userInfo && itemInfo.user=== userInfo.username && body?
+          <ControlPanel slug={itemInfo.slug}/>
           :null}
       </section>
       {body.length <= 0 ? (
-        <Link to={`/articles/${page}/${itemInfo.slug}`} className="article__link" />
+        <Link to={`/articles/${page}/${itemInfo.slug}`} className={classes.article__link} />
       ) : (
-        <div>{parse(body)}</div>
+        <div className={classes['article__mkdown-text']}>{parse(body)}</div>
       )}
     </li>
   )

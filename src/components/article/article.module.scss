@@ -1,6 +1,9 @@
 @use '../../var/var.scss';
+@use '../../fonts/fonts.scss';
 
 .article {
+    overflow: hidden;
+    height: 140px;
     list-style: none;
     position: relative;
     cursor: pointer;
@@ -11,12 +14,19 @@
     border-radius: 5px 5px 5px 5px;
     box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
 
+    &--full {
+        overflow: visible;
+        cursor: auto;
+        height: fit-content;
+    }
+
     &__header {
         display: flex;
         margin-bottom: 8px;
     }
 
     &__title {
+        overflow: hidden;
         margin: 0;
         font-weight: normal;
         font-size: 20px;
@@ -39,10 +49,15 @@
     }
 
     &__body {
+        overflow: hidden;
         margin: 0;
         color: var.$text-color;
         font-size: 12px;
 
+    }
+
+    &__mkdown-text {
+        overflow: hidden;
     }
 
     &__link {
@@ -63,6 +78,7 @@
     }
 
     &__button {
+        cursor: pointer;
         text-decoration: none;
         font-size: 14px;
         line-height: 24px;
@@ -79,12 +95,31 @@
         }
 
         &--edit {
+            padding: 6px 22px;
             color: var.$success-color;
             border: 1px solid var.$success-color;
 
             &:active {
                 background-color: rgb(223, 253, 207);
 
+            }
+        }
+    }
+
+    &__heart {
+        z-index: 5;
+
+        &--user {
+            &:hover {
+                color: red;
+            }
+        }
+
+        &--filled {
+            color: red;
+
+            &:hover {
+                color: rgb(253, 96, 96);
             }
         }
     }

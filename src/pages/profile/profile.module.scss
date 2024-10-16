@@ -1,0 +1,108 @@
+@use '../../var/var.scss';
+@use '../../fonts/fonts.scss';
+
+.blog__content {
+    flex-direction: column;
+    row-gap: 26px;
+    align-items: center;
+    display: flex;
+    margin: 26px 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.form {
+    width: 384px;
+    background-color: var.$background-color-base;
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0px 0.61px 2.93px 0px rgba(0, 0, 0, 0.0197),
+        0px 1.46px 7.05px 0px rgba(0, 0, 0, 0.0283),
+        0px 2.75px 13.27px 0px rgba(0, 0, 0, 0.035),
+        0px 4.91px 23.68px 0px rgba(0, 0, 0, 0.0417),
+        0px 9.19px 44.28px 0px rgba(0, 0, 0, 0.0503),
+        0px 22px 106px 0px rgba(0, 0, 0, 0.07);
+
+    &__title {
+        margin: 0;
+        font-size: 20px;
+        color: var.$form-text-color;
+        align-self: center;
+        margin-bottom: 32px
+    }
+
+    &__main {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+        margin-bottom: 32px;
+
+
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__input {
+        font-size: 16px;
+        padding: 8px 12px;
+        line-height: 24px;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid var.$form-border-color;
+        color: var.$text-color;
+
+        &:focus {
+            outline: var.$info-color solid 2px;
+        }
+
+        &::placeholder {
+            color: var.$form-text-secondary;
+        }
+
+        &--error {
+            border: 1px solid var.$highlight-color;
+        }
+    }
+
+    &__text {
+        line-height: 22px;
+        font-size: 14px;
+    }
+
+
+    &__submit {
+        background-color: var.$info-color;
+        border: none;
+        border-radius: 4px 4px 4px 4px;
+        color: var.$background-color-base;
+        font-size: 16px;
+        height: 40px;
+        margin-bottom: 10px;
+    }
+
+    &__footer {
+        font-size: 12px;
+        text-align: center;
+    }
+
+    &__error {
+        color: var.$highlight-color;
+        font-size: 14px;
+        line-height: 22px;
+        margin: 0;
+    }
+
+}
+
+
+
+.footer__text {
+    font-family: "Roboto-Regular";
+}

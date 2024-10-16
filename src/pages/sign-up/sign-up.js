@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 import { errorServer, fetchCreateUser, user } from '../../store/userSlice'
 
-import './sign-up.scss'
+import classes from './sign-up.module.scss'
 
 export default function SignUp() {
   const errorServerInfo = useSelector(errorServer)
@@ -33,30 +33,30 @@ export default function SignUp() {
   const agrement = formState.errors.agrement?.message
 
   const userInput = classNames({
-    form__input: true,
-    'form__input--error': nameError || errorServerInfo?.username,
+    [classes.form__input]: true,
+    [classes['form__input--error']]: nameError || errorServerInfo?.username,
   })
   const mailInput = classNames({
-    form__input: true,
-    'form__input--error': mailError || errorServerInfo?.email,
+    [classes.form__input]: true,
+    [classes['form__input--error']]: mailError || errorServerInfo?.email,
   })
   const passwordInput = classNames({
-    form__input: true,
-    'form__input--error': passwordError,
+    [classes.form__input]: true,
+    [classes['form__input--error']]: passwordError,
   })
   const confirmPassword = classNames({
-    form__input: true,
-    'form__input--error': confirmPpassword,
+    [classes.form__input]: true,
+    [classes['form__input--error']]: confirmPpassword,
   })
 
   return (
-    <div className="blog__content">
-      <form className="form" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="form__title">Create new account</h1>
-        <ul className="form__main">
+    <div className={classes.blog__content}>
+      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+        <h1 className={classes.form__title}>Create new account</h1>
+        <ul className={classes.form__main}>
           <li>
-            <label className="form__item" htmlFor="name">
-              <span className="form__text">Username</span>
+            <label className={classes.form__item} htmlFor="name">
+              <span className={classes.form__text}>Username</span>
               <input
                 {...register('name', {
                   required: 'This field is required',
@@ -78,13 +78,13 @@ export default function SignUp() {
                 id="name"
                 placeholder="Username"
               />
-              {nameError && <p className="form__error">{nameError}</p>}
-              {errorServerInfo?.username && <p className="form__error">{errorServerInfo?.username}</p>}
+              {nameError && <p className={classes.form__error}>{nameError}</p>}
+              {errorServerInfo?.username && <p className={classes.form__error}>{`Username ${errorServerInfo.username}`}</p>}
             </label>
           </li>
           <li>
-            <label className="form__item" htmlFor="Email">
-              <span className="form__text">Email address</span>
+            <label className={classes.form__item} htmlFor="Email">
+              <span className={classes.form__text}>Email address</span>
               <input
                 {...register('mail', {
                   required: 'This field is required',
@@ -98,13 +98,13 @@ export default function SignUp() {
                 id="Email"
                 placeholder="Email address"
               />
-              {mailError && <p className="form__error">{mailError}</p>}
-              {errorServerInfo?.email && <p className="form__error">{errorServerInfo?.email}</p>}
+              {mailError && <p className={classes.form__error}>{mailError}</p>}
+              {errorServerInfo?.email && <p className={classes.form__error}>{`Email ${errorServerInfo?.email}`}</p>}
             </label>
           </li>
           <li>
-            <label className="form__item" htmlFor="Password">
-              <span className="form__text">Password</span>
+            <label className={classes.form__item} htmlFor="Password">
+              <span className={classes.form__text}>Password</span>
               <input
                 {...register('password', {
                   required: 'This field is required',
@@ -127,12 +127,12 @@ export default function SignUp() {
                 id="Password"
                 placeholder="Password"
               />
-              {passwordError && <p className="form__error">{passwordError}</p>}
+              {passwordError && <p className={classes.form__error}>{passwordError}</p>}
             </label>
           </li>
           <li>
-            <label className="form__item" htmlFor="RepeatPassword">
-              <span className="form__text">Repeat Password</span>
+            <label className={classes.form__item} htmlFor="RepeatPassword">
+              <span className={classes.form__text}>Repeat Password</span>
               <input
                 {...register('confirmPassword', {
                   required: 'This field is required',
@@ -149,24 +149,24 @@ export default function SignUp() {
                 id="RepeatPassword"
                 placeholder="Password"
               />
-              {confirmPpassword && <p className="form__error">{confirmPpassword}</p>}
+              {confirmPpassword && <p className={classes.form__error}>{confirmPpassword}</p>}
             </label>
           </li>
         </ul>
-        <label className="form__agreement agreement " htmlFor="checkbox">
-          <div className="agreement__wrapper">
+        <label className={`${classes.form__agreement} ${classes.agreement}`} htmlFor="checkbox">
+          <div className={classes.agreement__wrapper}>
             <input {...register('agrement', { required: 'This field is required' })} type="checkbox" id="checkbox" />
-            <span>I agree to the processing of my personal information</span>
+            <span className={classes.agreement__text}>I agree to the processing of my personal information</span>
           </div>
-          {agrement && <p className="form__error">{agrement}</p>}
+          {agrement && <p className={classes.form__error}>{agrement}</p>}
         </label>
 
-        <button className="form__submit" type="submit">
+        <button className={classes.form__submit} type="submit">
           Create
         </button>
-        <footer className="form__footer">
-          <span>Already have an account?</span>
-          <Link to="/sign-in" className="form__link">
+        <footer className={`${classes.form__footer} ${classes.footer}`}>
+          <span className={classes.footer__text}>Already have an account?</span>
+          <Link to="/sign-in" className={classes.form__link}>
             {' '}
             Sign In.
           </Link>

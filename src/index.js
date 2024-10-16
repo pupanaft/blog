@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
 import store from './store'
-import App from './components/app'
+import App from './app'
 
 const rootElement = document.getElementById('root')
 if (rootElement) {

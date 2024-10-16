@@ -1,13 +1,6 @@
 @use '../../var/var.scss';
+@use '../../fonts/fonts.scss';
 
-@font-face {
-    font-family: "Inter_18pt-Regular";
-    src:
-        local("Inter_18pt-Regular"),
-        url("../../fonts/Inter_18pt-Regular.ttf") format("truetype");
-    font-weight: 500;
-    font-style: normal;
-}
 
 html {
     min-height: auto;
@@ -50,6 +43,29 @@ body {
         column-gap: 24px;
     }
 
+    &__user {
+        align-items: center;
+        display: flex;
+    }
+
+}
+
+.user {
+
+    top: 16px;
+    right: 16px;
+
+    &__image {
+        border-radius: 50%;
+        margin-left: 16px;
+        width: 46px;
+        height: 46px;
+    }
+
+    &__name {
+        color: var.$heading-color;
+        font-size: 18px;
+    }
 
 }
 
@@ -63,6 +79,7 @@ body {
     }
 
     &__log-out {
+        cursor: pointer;
         background-color: var.$background-color-base;
         border-radius: 4px 4px 4px 4px;
         border: 1px solid var.$text-color;
@@ -102,10 +119,6 @@ body {
     }
 }
 
-.header__user {
-
-    align-items: center;
-}
 
 
 

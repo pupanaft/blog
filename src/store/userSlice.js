@@ -1,52 +1,98 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-export const fetchCreateUser = createAsyncThunk('user/fetchCreateUser', async (data, { rejectWithValue }) => {
-  const response = await fetch('https://blog-platform.kata.academy/api/users', {
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      'user': {
-        'username': data.name,
-        'email': data.mail,
-        'password': data.password
-      }
-    })
-  }).then(async (responce) => await responce.json()).catch((e) => e) // eslint-disable-line
-  return response instanceof Error ? rejectWithValue(response.message) : response
-})
+import fetchMiddleware from '../services/fetch-middleware'
 
-export const fetchExitingUser = createAsyncThunk('user/fetchExitingUser', async (data, { rejectWithValue }) => {
-  const response = await fetch('https://blog-platform.kata.academy/api/users/login', {
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      'user': {
-        'email': data.mail,
-        'password': data.password
-      }
-    })
-    }).then(async (responce) => await responce.json()).catch((e) => e) // eslint-disable-line
-  return response instanceof Error ? rejectWithValue(response.message) : response
-})
 
-export const fetchEditUser = createAsyncThunk('user/fetchEditUser', async ({newUser, token},
-  { rejectWithValue }
-) => {
-  const response = await fetch('https://blog-platform.kata.academy/api/user', {
-    method: 'put',
-    headers: {
-      'Authorization':`Token ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({...newUser})}).then(async (responce) => await responce.json()).catch((e) => e) // eslint-disable-line
-  return response instanceof Error ? rejectWithValue(response.message) : response
-})
+export const checkAuth = createAsyncThunk(
+  'user/checkAuth',
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('userToken')
+      if (!token) {
+        throw new Error('No authentication token found')
+      }
+          
+      const response = await fetchMiddleware('get','user', token) 
+                
+      if (!response.ok) {
+        const errorData = await response.json()
+        return rejectWithValue(errorData)
+      }
+          
+      return await response.json()
+    } catch (error) {
+      return rejectWithValue(error.message || 'An error occurred')
+    }
+  }
+) 
+export const fetchCreateUser = createAsyncThunk(
+  'user/fetchCreateUser',
+  async (data, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('userToken')
+      const body = {
+        'user': {
+          'username': data.name,
+          'email': data.mail,
+          'password': data.password
+        }
+      }    
+      const response = await fetchMiddleware('post','users', token, body)                  
+      if (!response.ok) {
+        const errorData = await response.json()
+        return rejectWithValue(errorData)
+      }
+            
+      return await response.json()
+    } catch (error) {
+      return rejectWithValue(error.message)
+    }
+  }
+)
+export const fetchExitingUser = createAsyncThunk(
+  'user/fetchExitingUser',
+  async (data, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('userToken')
+      const body = {
+        'user': {
+          'email': data.mail,
+          'password': data.password
+        }
+      }    
+      const response = await fetchMiddleware('post','users/login', token, body)                
+      if (!response.ok) {
+        const errorData = await response.json()
+        return rejectWithValue(errorData)
+      }
+              
+      return await response.json()
+    } catch (error) {
+      return rejectWithValue(error.message)
+    }
+  }
+)
+export const fetchEditUser = createAsyncThunk(
+  'user/fetchEditUser',
+  async ({newUser}, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('userToken')
+      const body = {...newUser}
+      const response = await fetchMiddleware('put','user', token, body)           
+      if (!response.ok) {
+        const errorData = await response.json()
+        return rejectWithValue(errorData)
+      }
+                
+      return await response.json()
+    } catch (error) {
+      return rejectWithValue(error.message)
+    }
+  }
+)
+  
+
+
     
   
 
@@ -61,7 +107,9 @@ const userSlice = createSlice({
   reducers: {
     logOut(state) {
       state.user = null
+      state.errorServer= null
     },
+    
   },
   extraReducers: (bilder) => {
     bilder
@@ -70,22 +118,41 @@ const userSlice = createSlice({
       })
       .addCase(fetchCreateUser.fulfilled, (state, action) => {
         state.loading = false
-        if(action.payload.errors){
-          state.errorServer = action.payload.errors
-        }else{
-          state.user = action.payload.user
-          state.errorServer = null
-        }
+    
+        state.user = action.payload.user
+        state.errorServer = null
+       
       })
-      .addCase(fetchCreateUser.rejected, (state) => {
+      .addCase(fetchCreateUser.rejected, (state,action) => {
         state.loading = false
         state.error = true
+        if(action.payload.errors){
+          state.errorServer = action.payload.errors
+        }
       })
       .addCase(fetchExitingUser.pending, (state) => {
         state.loading = true
       })
       .addCase(fetchExitingUser.fulfilled, (state, action) => {
         state.loading = false
+        
+        state.user = action.payload.user
+        state.errorServer = null
+        localStorage.setItem('userToken', action.payload.user.token)
+        
+      })
+      .addCase(fetchExitingUser.rejected, (state,action) => {
+        state.loading = false
+        state.error = true
+        if(action.payload.errors){
+          state.errorServer = action.payload.errors
+        }
+      })
+      .addCase(checkAuth.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(checkAuth.fulfilled, (state,action ) => {
+        state.loading = false
         if(action.payload.errors){
           state.errorServer = action.payload.errors
         }else{
@@ -93,30 +160,33 @@ const userSlice = createSlice({
           state.errorServer = null
         }
       })
-      .addCase(fetchExitingUser.rejected, (state) => {
+      .addCase(checkAuth.rejected, (state) => {
         state.loading = false
         state.error = true
+
       })
       .addCase(fetchEditUser.pending, (state) => {
         state.loading = true
       })
       .addCase(fetchEditUser.fulfilled, (state, action) => {
         state.loading = false
-        if(action.payload.errors){
-          state.errorServer = action.payload.errors
-        }else{
-          state.user = action.payload.user
-          state.errorServer = null
-        }
+        state.user = action.payload.user
+        state.errorServer = null
+        
       })
-      .addCase(fetchEditUser.rejected, (state) => {
+      .addCase(fetchEditUser.rejected, (state,action) => {
         state.loading = false
         state.error = true
+        if(action.payload.errors){
+          state.errorServer = action.payload.errors
+        }
       })
+
   },
   selectors: {
     user: (state) => state.user,
-    errorServer:(state) => state.errorServer
+    errorServer:(state) => state.errorServer,
+
   },
 })
 

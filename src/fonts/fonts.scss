@@ -1,0 +1,26 @@
+@font-face {
+    font-family: "Inter_18pt-Regular";
+    src:
+        local("Inter_18pt-Regular"),
+        url("./Inter_18pt-Regular.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto-Medium";
+    src:
+        local("Roboto-Medium"),
+        url("./Roboto-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto-Regular";
+    src:
+        local("Roboto-Regular"),
+        url("./Roboto-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}

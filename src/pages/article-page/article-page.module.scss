@@ -1,3 +1,5 @@
+@use '../../fonts/fonts.scss';
+
 .blog__wrapper {
     flex-direction: column;
     row-gap: 26px;
@@ -5,4 +7,8 @@
     display: flex;
     margin: 26px 20px;
     padding: 0;
+
+    &--form {
+        margin: 0;
+    }
 }

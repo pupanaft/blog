@@ -5,7 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import Article from '../../components/article'
 import { fetchArticles, totalArticle, articlesArr } from '../../store/blogSlice'
-import './articles-list.scss'
+
+import classes from './articles-list.module.scss'
 
 export default function ArticlesList() {
   const { page } = useParams()
@@ -17,14 +18,15 @@ export default function ArticlesList() {
   useEffect(() => {
     dispatch(fetchArticles(page))
   }, [dispatch, page])
-  console.log(articles)
+
   const ariclePage = articles.map((article) => <Article key={article.slug} page={page} itemInfo={article} />)
   const handlePageChange = (newPage) => {
     navigate(`/articles/${newPage}`)
   }
+
   return (
     <>
-      <ul className="blog__content">{ariclePage}</ul>
+      <ul className={classes.blog__content}>{ariclePage}</ul>
       <ConfigProvider
         theme={{
           components: {
