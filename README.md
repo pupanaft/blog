@@ -1,1 +1,1 @@
-https://aviasales-app-ecru.vercel.app/
+https://blog-eight-delta-92.vercel.app/

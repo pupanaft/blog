@@ -120,6 +120,11 @@
         margin: 0;
     }
 
+    &__link {
+        font-family: "Roboto-Regular";
+        text-decoration: none;
+        color: var.$info-color;
+    }
 }
 
 
